@@ -1,217 +1,195 @@
 var config = {
-  geojson: "https://web.fulcrumapp.com/shares/a5c8e07368efde43.geojson",
-  title: "Congress Park Trees",
-  layerName: "Trees",
-  hoverProperty: "species_sim",
-  sortProperty: "dbh_2012_inches_diameter_at_breast_height_46",
-  sortOrder: "desc"
+  title: "OSMLint",
+  layerName: "OSMLint",
+  hoverProperty: "_osmlint",
+  sortProperty: "_osmlint",
+  sortOrder: "_osmlint"
 };
 
 var properties = [{
-  value: "fulcrum_id",
-  label: "Fulcrum ID",
+  value: "_osmlint",
+  label: "Error",
   table: {
-    visible: false,
-    sortable: true
-  },
-  filter: {
-    type: "string"
-  },
-  info: false
-},
-{
-  value: "status",
-  label: "Status",
-  table: {
-    visible: true,
-    sortable: true
-  },
-  filter: {
     type: "string",
-    input: "checkbox",
-    vertical: true,
-    multiple: true,
-    operators: ["in", "not_in", "equal", "not_equal"],
-    values: []
-  }
-},
-{
-  value: "congress_park_inventory_zone",
-  label: "Inventory Zone",
-  table: {
-    visible: true,
-    sortable: true
-  },
-  filter: {
-    type: "string",
-    input: "checkbox",
-    vertical: true,
-    multiple: true,
-    operators: ["in", "not_in", "equal", "not_equal"],
-    values: []
-  }
-},
-{
-  value: "2012_inventory_number",
-  label: "Inventory Number",
-  table: {
-    visible: true,
-    sortable: true
-  },
-  filter: {
-    type: "integer"
-  }
-},
-{
-  value: "species_sim",
-  label: "Species",
-  table: {
-    visible: true,
-    sortable: true
-  },
-  filter: {
-    type: "string"
-  }
-},
-{
-  value: "circumference_2012_inches_at_breast_height_",
-  label: "Circumference (inches)",
-  table: {
-    visible: true,
-    sortable: true
-  },
-  filter: {
-    type: "integer"
-  }
-},
-{
-  value: "dbh_2012_inches_diameter_at_breast_height_46",
-  label: "DBH (inches)",
-  table: {
-    visible: true,
-    sortable: true
-  },
-  filter: {
-    type: "integer"
-  }
-},
-{
-  value: "plaque",
-  label: "Plaque",
-  table: {
-    visible: true,
-    sortable: true
-  },
-  filter: {
-    type: "string",
-    input: "radio",
-    operators: ["equal"],
-    values: {
-      "yes": "Yes",
-      "no": "No"
-    }
-  }
-},
-{
-  value: "notes_other_information",
-  label: "Notes",
-  table: {
-    visible: false,
-    sortable: true
-  },
-  filter: {
-    type: "string"
-  }
-},
-{
-  value: "photos_url",
-  label: "Photos",
-  table: {
     visible: true,
     sortable: true,
-    formatter: urlFormatter
+    operators: ["in", "not_in", "equal", "not_equal"],
   },
-  filter: false
+  filter: {
+    type: "string"
+  },
+  info: true
+},
+{
+  value: "_osm_way_id",
+  label: "WayID",
+  table: {
+    visible: true,
+    sortable: true
+  },
+  filter: false 
+},
+{
+  value: "_osm_node_id",
+  label: "NodeID",
+  table: {
+    visible: true,
+    sortable: true
+   },
+   filter: false 
+},
+{
+   value: "_version",
+   label: "Version",
+   table: {
+     visible: true,
+     sortable: true
+    },
+    filter: false 
+},
+{
+    value: "_changeset",
+    label: "Latest Changeset",
+    table: {
+      visible: true,
+      sortable: true
+    },
+    filter: false
+},
+{
+    value: "_user",
+    label: "User",
+    table: {
+      visible: true,
+      sortable: true
+    },
+    filter: {
+      type: "string",
+      input: "checkbox",
+      vertical: true,
+      multiple: true,
+      operators: ["in", "not_in", "equal", "not_equal"],
+      values: []
+    }
+},
+{
+    value: "name",
+    label: "Name",
+    table: {
+      visible: true,
+      sortable: true
+    },
+    filter: {
+      type: "string",
+      input: "checkbox",
+      vertical: true,
+      multiple: true,
+      operators: ["in", "not_in", "equal", "not_equal"],
+      values: []
+    }
+},
+{
+    value: "highway",
+    label: "Highway",
+    table: {
+      visible: true,
+      sortable: true
+    },
+    filter: {
+      type: "string",
+      input: "checkbox",
+      vertical: true,
+      multiple: true,
+      operators: ["in", "not_in", "equal", "not_equal"],
+      values: []
+    }
+},
+{
+    value: "building",
+    label: "Building",
+    table: {
+      visible: true,
+      sortable: true
+    },
+    filter: {
+      type: "string",
+      input: "checkbox",
+      vertical: true,
+      multiple: true,
+      operators: ["in", "not_in", "equal", "not_equal"],
+      values: []
+    }
+},
+{
+    value: "landuse",
+    label: "Landuse",
+    table: {
+      visible: true,
+      sortable: true
+    },
+    filter: {
+      type: "string",
+      input: "checkbox",
+      vertical: true,
+      multiple: true,
+      operators: ["in", "not_in", "equal", "not_equal"],
+      values: []
+    }
+},
+{
+    value: "_josm_url",
+    label: "Open in JOSM",
+    table: {
+      visible: true,
+      sortable: false,
+      type: "string",
+      formatter: urlFormatter
+    },
+    filter: false
 }];
 
+function init() {
+  var url = window.location.hash.substring(1);
+  var gistParts = url.split('/');
+  var gistID = gistParts[3] === 'anonymous' ? gistParts[4] : gistParts[3];
+  var githubUrl = 'https://api.github.com/gists/' + gistID;
+  $.getJSON(githubUrl, function(data) {
+    var rawUrl = data.files['results.json'].raw_url;
+    config.geojson = rawUrl;
+    loadData();
+  });
+}
+
 function drawCharts() {
-  // Status
+  // Errors
   $(function() {
-    var result = alasql("SELECT status AS label, COUNT(*) AS total FROM ? GROUP BY status", [features]);
-    var columns = $.map(result, function(status) {
-      return [[status.label, status.total]];
+    var result = alasql("SELECT _osmlint AS label, COUNT(*) AS total FROM ? GROUP BY _osmlint", [features]);
+    var columns = $.map(result, function(_osmlint) {
+      return [[_osmlint.label, _osmlint.total]];
     });
     var chart = c3.generate({
         bindto: "#status-chart",
         data: {
-          type: "pie",
+          type: "bar",
           columns: columns
         }
     });
   });
 
-  // Zones
+  // Users
   $(function() {
-    var result = alasql("SELECT congress_park_inventory_zone AS label, COUNT(*) AS total FROM ? GROUP BY congress_park_inventory_zone", [features]);
-    var columns = $.map(result, function(zone) {
-      return [[zone.label, zone.total]];
+    var result = alasql("SELECT _user AS label, COUNT(*) AS total FROM ? GROUP BY _user", [features]);
+    var columns = $.map(result, function(_user) {
+      return [[_user.label, _user.total]];
     });
     var chart = c3.generate({
         bindto: "#zone-chart",
         data: {
-          type: "pie",
-          columns: columns
-        }
-    });
-  });
-
-  // Size
-  $(function() {
-    var sizes = [];
-    var regeneration = alasql("SELECT 'Regeneration (< 3\")' AS category, COUNT(*) AS total FROM ? WHERE CAST(dbh_2012_inches_diameter_at_breast_height_46 as INT) < 3", [features]);
-    var sapling = alasql("SELECT 'Sapling/poles (1-9\")' AS category, COUNT(*) AS total FROM ? WHERE CAST(dbh_2012_inches_diameter_at_breast_height_46 as INT) BETWEEN 1 AND 9", [features]);
-    var small = alasql("SELECT 'Small trees (10-14\")' AS category, COUNT(*) AS total FROM ? WHERE CAST(dbh_2012_inches_diameter_at_breast_height_46 as INT) BETWEEN 10 AND 14", [features]);
-    var medium = alasql("SELECT 'Medium trees (15-19\")' AS category, COUNT(*) AS total FROM ? WHERE CAST(dbh_2012_inches_diameter_at_breast_height_46 as INT) BETWEEN 15 AND 19", [features]);
-    var large = alasql("SELECT 'Large trees (20-29\")' AS category, COUNT(*) AS total FROM ? WHERE CAST(dbh_2012_inches_diameter_at_breast_height_46 as INT) BETWEEN 20 AND 29", [features]);
-    var giant = alasql("SELECT 'Giant trees (> 29\")' AS category, COUNT(*) AS total FROM ? WHERE CAST(dbh_2012_inches_diameter_at_breast_height_46 as INT) > 29", [features]);
-    sizes.push(regeneration, sapling, small, medium, large, giant);
-    var columns = $.map(sizes, function(size) {
-      return [[size[0].category, size[0].total]];
-    });
-    var chart = c3.generate({
-        bindto: "#size-chart",
-        data: {
-          type: "pie",
-          columns: columns
-        }
-    });
-  });
-
-  // Species
-  $(function() {
-    var result = alasql("SELECT species_sim AS label, COUNT(*) AS total FROM ? GROUP BY species_sim ORDER BY label ASC", [features]);
-    var chart = c3.generate({
-        bindto: "#species-chart",
-        size: {
-          height: 2000
-        },
-        data: {
-          json: result,
-          keys: {
-            x: "label",
-            value: ["total"]
-          },
-          type: "bar"
-        },
-        axis: {
-          rotated: true,
-          x: {
-            type: "category"
-          }
-        },
-        legend: {
-          show: false
-        }
+          type: "bar",
+          columns: columns,
+	  order: 'desc'
+	    },
+	
     });
   });
 }
@@ -310,20 +288,16 @@ function buildConfig() {
 }
 
 // Basemap Layers
-var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  subdomains: ["otile1", "otile2", "otile3", "otile4"],
-  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
-});
 
-var mapquestHYB = L.layerGroup([L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-  maxZoom: 18,
-  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"]
-}), L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/hyb/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-  attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
-})]);
+
+var mapbox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicnViZW4iLCJhIjoiYlBrdkpRWSJ9.JgDDxJkvDn3us36aGzR6vg', {
+        maxZoom: 19,
+        id: 'mapbox.streets',
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+	'<a href="http://www.openstreetmap.org/copyright">ODbL</a> ' +
+	'| Map tiles &copy; <a href="http://mapbox.com">Mapbox</a>',
+    });
+
 
 var highlightLayer = L.geoJson(null, {
   pointToLayer: function (feature, latlng) {
@@ -395,25 +369,30 @@ var featureLayer = L.geoJson(null, {
   }
 });
 
+init();
+
 // Fetch the GeoJSON file
-$.getJSON(config.geojson, function (data) {
-  geojson = data;
-  features = $.map(geojson.features, function(feature) {
-    return feature.properties;
+function loadData() {
+  $.getJSON(config.geojson, function (data) {
+    geojson = data;
+    features = $.map(geojson.features, function(feature) {
+      return feature.properties;
+    });
+    featureLayer.addData(data);
+    buildConfig();
+    $("#loading-mask").hide();
   });
-  featureLayer.addData(data);
-  buildConfig();
-  $("#loading-mask").hide();
-});
+}
 
 var map = L.map("map", {
-  layers: [mapquestOSM, featureLayer, highlightLayer]
+	zoomControl:false,
+  layers: [mapbox, featureLayer, highlightLayer]
 }).fitWorld();
 
 // ESRI geocoder
-var searchControl = L.esri.Geocoding.Controls.geosearch({
-  useMapBounds: 17
-}).addTo(map);
+//var searchControl = L.esri.Geocoding.Controls.geosearch({
+//  useMapBounds: 17
+//}).addTo(map);
 
 // Info control
 var info = L.control({
@@ -439,15 +418,15 @@ if (document.body.clientWidth <= 767) {
   isCollapsed = false;
 }
 var baseLayers = {
-  "Street Map": mapquestOSM,
-  "Aerial Imagery": mapquestHYB
+  "Mapbox": mapbox
+  //"Aerial Imagery": mapquestHYB
 };
 var overlayLayers = {
   "<span id='layer-name'>GeoJSON Layer</span>": featureLayer
 };
-var layerControl = L.control.layers(baseLayers, overlayLayers, {
-  collapsed: isCollapsed
-}).addTo(map);
+//var layerControl = L.control.layers(baseLayers, overlayLayers, {
+//  collapsed: isCollapsed
+//}).addTo(map);
 
 // Filter table to only show features in current map bounds
 map.on("moveend", function (e) {
