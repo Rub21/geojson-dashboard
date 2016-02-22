@@ -152,12 +152,9 @@ function init() {
   var url = window.location.hash.substring(1);
   var gistParts = url.split('/');
   var gistID = gistParts[3] === 'anonymous' ? gistParts[4] : gistParts[3];
-  var githubUrl = 'https://api.github.com/gists/' + gistID;
-  $.getJSON(githubUrl, function(data) {
-    var rawUrl = data.files['results.json'].raw_url;
-    config.geojson = rawUrl;
-    loadData();
-  });
+  var gistRaw = 'https://gist.githubusercontent.com/raw/' + gistID;
+  config.geojson = gistRaw;
+  loadData();
 }
 
 function drawCharts() {
